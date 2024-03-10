@@ -9,12 +9,15 @@ const { connect } = require("./connect/connectDB");
 require("dotenv").config();
 
 const userRoutes = require("./routes/user");
+const adminRoutes = require("./routes/admin/user");
 
 connect();
 
 env.config();
 app.use(express.urlencoded({ extended: true }));
 app.use("/api", userRoutes);
+app.use("/api", adminRoutes);
+
 app.listen(process.env.PORT, () => {
   console.log(`server is running on port ${process.env.PORT}`);
 });

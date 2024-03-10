@@ -1,8 +1,8 @@
-const User = require("../models/user");
+const User = require("../../models/user");
 const jwt = require("jsonwebtoken");
 
 // signup
-exports.signup = async (req, res, next) => {
+exports.signupp = async (req, res, next) => {
   const { firstName, lastName, email, password } = req.body;
 
   try {
@@ -11,7 +11,7 @@ exports.signup = async (req, res, next) => {
     if (existingUser) {
       return res
         .status(400)
-        .json({ message: "User already registered", user: existingUser });
+        .json({ message: "admin already registered", user: existingUser });
     }
 
     const newUser = new User({
@@ -20,10 +20,13 @@ exports.signup = async (req, res, next) => {
       email,
       password,
       username: Math.random().toString(),
+      role: "admin",
     });
 
     const savedUser = await newUser.save();
-    res.status(201).json({ message: "succsfullu signed up", savedUser });
+    res
+      .status(201)
+      .json({ message: "Admin successfully signed up", savedUser });
   } catch (error) {
     res.status(400).json({ message: "Something went wrong" });
   }
@@ -36,7 +39,7 @@ exports.signin = async (req, res, next) => {
     if (!found)
       return res.status(400).json({ message: "User Email not found" });
     else {
-      if (found.authenticate(req.body.password)) {
+      if (found.authenticate(req.body.password) && found.role === "admin") {
         const token = jwt.sign({ _id: found._id }, process.env.JWT_SECRET, {
           expiresIn: "1h",
         });
