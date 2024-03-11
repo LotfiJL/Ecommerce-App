@@ -1,6 +1,5 @@
 const User = require("../models/user");
 const jwt = require("jsonwebtoken");
-
 // signup
 exports.signup = async (req, res, next) => {
   const { firstName, lastName, email, password } = req.body;
@@ -23,7 +22,7 @@ exports.signup = async (req, res, next) => {
     });
 
     const savedUser = await newUser.save();
-    res.status(201).json({ message: "succsfullu signed up", savedUser });
+    res.status(201).json({ message: "successfully signed up", savedUser });
   } catch (error) {
     res.status(400).json({ message: "Something went wrong" });
   }
