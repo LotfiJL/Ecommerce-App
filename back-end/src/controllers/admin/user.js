@@ -41,9 +41,13 @@ exports.signin = async (req, res, next) => {
       return res.status(400).json({ message: "User Email not found" });
     else {
       if (found.authenticate(req.body.password) && found.role === "admin") {
-        const token = jwt.sign({ _id: found._id }, process.env.JWT_SECRET, {
-          expiresIn: "1h",
-        });
+        const token = jwt.sign(
+          { _id: found._id, role: found.role },
+          process.env.JWT_SECRET,
+          {
+            expiresIn: "1h",
+          }
+        );
         const { _id, firstName, lastName, role, fullName } = found;
 
         res.status(200).json({
@@ -61,12 +65,12 @@ exports.signin = async (req, res, next) => {
   }
 };
 
-// signin
+// C-middleware
 
-exports.requireSignin = (req, res, next) => {
-  const token = req.headers.authorization.split(" ")[1];
-  const user = jwt.verify(token, process.env.JWT_SECRET);
-  req.user = user;
-  // jwt.decode
-  next();
-};
+// exports.requireSignin = (req, res, next) => {
+//   const token = req.headers.authorization.split(" ")[1];
+//   const user = jwt.verify(token, process.env.JWT_SECRET);
+//   req.user = user;
+//   // jwt.decode
+//   next();
+// };
