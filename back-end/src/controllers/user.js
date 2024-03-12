@@ -47,7 +47,9 @@ exports.signin = async (req, res, next) => {
           user: { _id, firstName, lastName, email, role, fullName },
         });
       } else {
-        return res.status(400).json({ message: "This is invalid password" });
+        return res
+          .status(400)
+          .json({ message: "This is invalid password", password });
       }
     }
   } catch {
