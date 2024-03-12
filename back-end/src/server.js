@@ -9,6 +9,7 @@ require("dotenv").config();
 
 const userRoutes = require("./routes/user");
 const adminRoutes = require("./routes/admin/user");
+const productRoutes = require("./routes/product");
 
 connect();
 
@@ -17,6 +18,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use("/api", userRoutes);
 app.use("/api", adminRoutes);
 app.use("/api", categoryRoutes);
+app.use("/api", productRoutes);
 
 app.listen(process.env.PORT, () => {
   console.log(`server is running on port ${process.env.PORT}`);
