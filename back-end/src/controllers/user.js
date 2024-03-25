@@ -1,3 +1,4 @@
+const user = require("../models/user");
 const User = require("../models/user");
 const jwt = require("jsonwebtoken");
 // signup
@@ -36,9 +37,13 @@ exports.signin = async (req, res, next) => {
       return res.status(400).json({ message: "User Email not found" });
     else {
       if (found.authenticate(req.body.password)) {
-        const token = jwt.sign({ _id: found._id }, process.env.JWT_SECRET, {
-          expiresIn: "1h",
-        });
+        const token = jwt.sign(
+          { _id: found._id, role: user.role },
+          process.env.JWT_SECRET,
+          {
+            expiresIn: "1h",
+          }
+        );
         const { _id, firstName, lastName, role, fullName } = found;
 
         res.status(200).json({
